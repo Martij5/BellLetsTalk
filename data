@@ -1,0 +1,20 @@
+TwitterPosts = require 'twitter-screen-scrape'
+
+# create the stream
+streamOfTweets = new TwitterPosts(username: 'Bell_LetsTalk', retweets: false)
+
+# do something interesting with the stream
+streamOfTweets.on('readable', ->
+  # since it's an object-mode stream, we get objects from it and don't need to
+  # parse JSON or anything.
+  tweet = streamOfTweets.read()
+
+  # the time field is represented in UNIX time
+  time = new Date(tweet.time * 1000)
+
+  # output something like "Bell_LetsTalk's tweet from 1/25/2017 got 0 favorites, 0
+  # replies, and 0 retweets"
+  console.log "slang800's tweet from #{time.toLocaleDateString()} got
+  #{tweet.favorite} favorites, #{tweet.reply} replies, and #{tweet.retweet}
+  retweets"
+)
